@@ -105,24 +105,45 @@ class _OnBoardScrenState extends State<OnBoardScren> {
                   ),
                 ),
                 const SizedBox(height: 200),
-                const Text(
-                  "Select your language",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                    onPressed: () {
-                      Get.offAll(MyHomePage(url: "https://orthosongbad.com/"));
-                      selectLanguage("Bangla");
-                    },
-                    child: Text("Bangla")),
-                ElevatedButton(
-                    onPressed: () {
-                      Get.offAll(
-                          MyHomePage(url: "https://en.orthosongbad.com/"));
-                      selectLanguage("English");
-                    },
-                    child: Text("English")),
+                Card(
+                  elevation: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Select your language",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Material(
+                              child: TextButton(
+                                  onPressed: () {
+                                    Get.offAll(MyHomePage(
+                                        url: "https://orthosongbad.com/"));
+                                    selectLanguage("Bangla");
+                                  },
+                                  child: Text("Bangla")),
+                            ),
+                            Material(
+                              child: TextButton(
+                                  onPressed: () {
+                                    Get.offAll(MyHomePage(
+                                        url: "https://en.orthosongbad.com/"));
+                                    selectLanguage("English");
+                                  },
+                                  child: Text("English")),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
