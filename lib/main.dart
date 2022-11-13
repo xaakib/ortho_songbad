@@ -72,15 +72,9 @@ class _MyAppState extends State<MyApp> {
 class OnBoardScren extends StatefulWidget {
   @override
   State<OnBoardScren> createState() => _OnBoardScrenState();
-  final int color1 = 0xff939393;
-  final int color2 = 0xff03246b;
 }
 
 class _OnBoardScrenState extends State<OnBoardScren> {
-  List<String> items = [
-    'English',
-    'Bangla',
-  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -116,22 +110,19 @@ class _OnBoardScrenState extends State<OnBoardScren> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 const SizedBox(height: 16),
-                MaterialDropdownView(
-                  onChangedCallback: (value) {
-                    selectLanguage(value);
-                    var langcode = "";
-                    var baseUrl = "";
-                    if (langcode == "English") {
-                      baseUrl = "https://en.orthosongbad.com/";
-                    } else {
-                      baseUrl = "https://orthosongbad.com/";
-                    }
-
-                    Get.offAll(MyHomePage(url: baseUrl));
-                  },
-                  value: items.first,
-                  values: items,
-                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Get.offAll(MyHomePage(url: "https://orthosongbad.com/"));
+                      selectLanguage("Bangla");
+                    },
+                    child: Text("Bangla")),
+                ElevatedButton(
+                    onPressed: () {
+                      Get.offAll(
+                          MyHomePage(url: "https://en.orthosongbad.com/"));
+                      selectLanguage("English");
+                    },
+                    child: Text("English")),
               ],
             ),
           ),
@@ -143,47 +134,5 @@ class _OnBoardScrenState extends State<OnBoardScren> {
   selectLanguage(value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lang', "$value");
-  }
-}
-
-class MaterialDropdownView extends StatelessWidget {
-  final Function onChangedCallback;
-  final String value;
-  final Iterable<String> values;
-
-  MaterialDropdownView(
-      {required this.value,
-      required this.values,
-      required this.onChangedCallback});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        height: 40,
-        width: double.infinity,
-        padding: const EdgeInsets.only(left: 15.0, right: 10.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32.0), border: Border.all()),
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton(
-                value: this.value,
-                items:
-                    this.values.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  this.onChangedCallback(newValue);
-                }),
-          ),
-        ),
-      ),
-    );
   }
 }

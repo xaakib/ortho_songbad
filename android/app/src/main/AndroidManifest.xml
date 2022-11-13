@@ -4,6 +4,8 @@
 
    <application
         android:label="Ortho Songbad"
+        usesCleartextTraffic="true"
+        androidSupportRtl="true"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
