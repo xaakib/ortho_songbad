@@ -32,8 +32,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  get: ^4.6.5
-  shared_preferences: ^2.0.15
   webview_flutter: ^3.0.4
 
 dev_dependencies:
