@@ -1,4 +1,4 @@
-package com.example.ortho_songbad
+package com.ortho_songbad
 
 import io.flutter.embedding.android.FlutterActivity
 

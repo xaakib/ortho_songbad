@@ -4,7 +4,6 @@ import 'package:ortho_songbad/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -16,53 +15,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String baseUrl = "";
-  String checkLangCode = "";
-  bool isLoading = false;
-
-  getLanguage() async {
-    setState(() {
-      isLoading = true;
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var langcode = prefs.get('lang');
-    print("langcode========$langcode");
-
-    if (langcode == "English") {
-      baseUrl = "https://en.orthosongbad.com/";
-    } else {
-      baseUrl = "https://orthosongbad.com/";
-    }
-    checkLangCode = langcode.toString();
-    print("CheckCode ======$checkLangCode");
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getLanguage();
-  }
-
   @override
   Widget build(BuildContext context) {
-    print("CheckCode ======$checkLangCode");
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ortho Songbad',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: isLoading == true
-            ? const Scaffold(
-                body: Center(
-                child: CircularProgressIndicator(),
-              ))
-            : checkLangCode == "null"
-                ? OnBoardScren()
-                : MyHomePage(url: baseUrl));
+        home: OnBoardScren());
   }
 }
 

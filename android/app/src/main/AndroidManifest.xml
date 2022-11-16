@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ortho_songbad">
+    package="com.ortho_songbad">
      <uses-permission android:name="android.permission.INTERNET" />
 
    <application
