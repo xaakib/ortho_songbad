@@ -15,6 +15,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController _controller;
+  final _key = UniqueKey();
   bool isLoading = true;
 
   final Completer<WebViewController> _controllerCompleter =
@@ -24,34 +25,72 @@ class _MyHomePageState extends State<MyHomePage> {
       _controller.goBack();
       return Future.value(false);
     } else {
-      return Future.value(true);
+      return showExiPopupt();
     }
+  }
+
+  Future<bool> showExiPopupt() async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text('Do you want to exit?'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('NO'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('YES'),
+              ),
+            ],
+          ),
+        ) ??
+        false; //if showDialouge had returned null, then return false
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     if (Platform.isIOS) WebView.platform = CupertinoWebView();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("BuildContext");
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
-      child: Scaffold(
-        body: SafeArea(
-            child: WebView(
-          key: UniqueKey(),
-          onWebViewCreated: (WebViewController webViewController) {
-            _controllerCompleter.future.then((value) => _controller = value);
-            _controllerCompleter.complete(webViewController);
-          },
-          zoomEnabled: true,
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: widget.url,
-        )),
+      child: SafeArea(
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              WebView(
+                key: _key,
+                onWebViewCreated: (WebViewController webViewController) {
+                  _controllerCompleter.future
+                      .then((value) => _controller = value);
+                  _controllerCompleter.complete(webViewController);
+                },
+                zoomEnabled: true,
+                initialUrl: widget.url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (finish) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+              ),
+              isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Stack(),
+            ],
+          ),
+        ),
       ),
     );
   }
